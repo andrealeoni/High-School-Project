@@ -23,7 +23,7 @@ unsigned char T_Comando[1024];	//Comando Inserito
 unsigned char T_Esito[1024];	//Esito Ricevuto
 using namespace std;
 char IP_MASK[20] = "172.16.7.122";
-char IP_MONITOR[20] = "172.16.7.121";
+char IP_MONITOR[20] = "172.16.7.116";
 
 // Converte Indirizzo IPv4 in numero binario 32 bit
 unsigned long IP_to_bin(char ip_address[]);
@@ -42,7 +42,7 @@ unsigned short port_number;
 unsigned short port_number_To_Mask;
 unsigned short port_number_To_Monitor;
 char str_ip_address[MAXCHSTR];
-int num_pacchetti;
+int num_pacchetti = 0;
 int n;
 
 // Creazione oggetto di classe UDP (socket con porta n. 23365)
@@ -176,18 +176,23 @@ bool Receive_From_Mask()  //Scritta da Walter, implementazione della funzione sc
 	for (int k = 0; k < 1024; k++) {							//pulizia buffer 
 		buffer_R[k] = ' ';
 	}
+	cout << "\n a \n";
 	n = socket_RMA.receive(&ip_address, &port_number, buffer_R, sizeof(buffer_R)); //ricezione num pacchetti
-	buffer_R[n + 1] = '\0';
+	cout << "\n b \n";
+	//buffer_R[n + 1] = '\0';
 	cout << "numero pacchetti:  " << buffer_R << endl;
 	num_pacchetti = atoi((char*)buffer_R);	
 	Send_To_Monitor_Comando();	//invio del comando al Monitor di Custureri
 	socket_RMA.send(ip_address_Mask, port_number_To_Mask, ACK, sizeof(ACK));  //invio un ack di corretta ricezione	
+	cout << "ACK iviato a MASK";
 
 	for (int i = 0; i < num_pacchetti; i++)								//riceve le righe e stampa a schermo
 	{
+		cout << "ok";
 		int zz = socket_RMA.receive(&ip_address, &port_number, buffer_R, sizeof(buffer_R));
-		buffer_R[zz] = '\0';
-		socket_RMA.send(ip_address, port_number, ACK, strlen((char*)ACK));
+		cout << buffer_R;
+		//buffer_R[zz] = '\0';
+		socket_RMA.send(ip_address_Mask, port_number_To_Mask, ACK, strlen((char*)ACK));
 		T_Esito[i] = buffer_R[i];
 		Send_To_Monitor();	//invio della stringa Monitor di Custureri
 		cout << "Mask: " << (char*)buffer_R << endl;
