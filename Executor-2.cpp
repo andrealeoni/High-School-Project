@@ -82,12 +82,13 @@ void fromFile() //Rivolta
 	if (result.eof())
 	{
 		result.close();
-		result.open("CMDResults.txt", ios::out);
 		result << error;
 		result.close();
 	}
 	else
 	{
+		result.close();
+		result.open("CMDResults.txt", ios::in);
 		if (result.is_open())
 		{
 			while (!result.eof())
