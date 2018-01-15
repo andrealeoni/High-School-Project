@@ -49,11 +49,6 @@ void intToString(int num, char str[]) //Merlo e Grandesso
 	str[i] = '\0';
 }
 
-void socket_send(unsigned char str[]) //Rivolta
-{
-	
-}
-
 void conta() //Merlo
 {
 	int contarighe = 0;
