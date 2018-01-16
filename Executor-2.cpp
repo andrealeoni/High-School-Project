@@ -73,12 +73,12 @@ void fromFile() //Rivolta
 {
 	char strResult[1024];
 	fstream result;
-	result.open("CMDResults.txt", ios::out);
+	result.open("CMDResults.txt", ios::in);
 	if (result.eof())
 	{
 		result.close();
+		result.open("CMDResults.txt", ios::out);
 		result << error;
-		result.close();
 	}
 	else
 	{
