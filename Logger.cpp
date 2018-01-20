@@ -26,8 +26,6 @@ fstream file_var;
 
 // Converte Indirizzo IPv4 in numero binario a 32 bit
 unsigned long IP_to_bin(char ip_address[]);
-char f_receive();
-void f_salva_file();
 
 void main()
 {
@@ -39,9 +37,10 @@ void main()
 	int n;
 	char str_ip_address[MAXCHSTR];
 	UDP socket(PORT_NUM); // Inizializzazione socket UDP con numero porta fittizio
-	char spaziatura1[4] = { ' ', ' ', '|', ' ' };
-	char spaziatura2[5] = { ' ', ' ', '|', ' ', ' ' };
-	char esitoNegativo[8] = { 'N', 'E', 'G', 'A', 'T', 'I', 'V', 'O' };
+	char spaziatura1[5] = { ' ', ' ', '|', ' ', '\0' };
+	char spaziatura2[6] = { ' ', ' ', '|', ' ', ' ', '\0' };
+	char spaziatura3[1] = { '\0' };
+	char esitoNegativo[9] = { 'N', 'E', 'G', 'A', 'T', 'I', 'V', 'O', '\0' };
 
 	// creazione del file nel caso esista viene solo aperto e chiuso
 	file_var.open("FileDiLog.txt", ios::app);
@@ -82,21 +81,21 @@ void main()
 			}
 			cout << spaziatura2;
 			file_var << spaziatura2;
-			if (buffer[19] == '\0') // se non c'è scritto niente nel messaggio l'esito è negativo
+			if (buffer[19] == '\0') // se non c'Ã¨ scritto niente nel messaggio l'esito Ã¨ negativo
 			{
 				cout << esitoNegativo;
 				file_var << esitoNegativo;
 			}
 			else
 			{
-				for (int i = 19; i < n; i++)
+				for (int i = 19; (buffer[i] != '\0'); i++)
 				{
 					cout << buffer[i];
 					file_var << buffer[i];
 				}
 			}
-			cout << endl;
-			file_var << endl;
+			cout << spaziatura3 << endl;
+			file_var << spaziatura3 << endl;
 
 			file_var.close(); //chiusura file
 		}
@@ -104,11 +103,6 @@ void main()
 
 	system("pause");
 }
-
-///////////////////////////////////////////////////////////////////
-//     1970 - 01 - 01 01:00 : 00CIAO
-///////////////////////////////////////////////////////////////////
-
 
 
 unsigned long IP_to_bin(char ip_add[])
@@ -145,12 +139,3 @@ unsigned long IP_to_bin(char ip_add[])
 
 	return add;
 } // End IP_to_bin
-
-char f_receive()
-{
-	return 0;
-}
-
-void f_salva_file()
-{
-}
